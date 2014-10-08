@@ -12,13 +12,14 @@ To securely expose data from supercomputers over the web, several groups have de
 To summarize, an implementation of this web dashboard will be built using the following components:
 * Dashboard framework for the UI.
 * Javascript charting library for dashboard widgets.
-* Real-time API calls to obtain data from supercomputing resources (NEWT).
+* Real-time API calls to obtain data from supercomputing resources (NEWT, see [1] below).
 
 Although an initial implementation above is not completed, the following points describe desired long-term functionality.
 * Public and private views of web dashboard, to encourage open science.
-* Web-based administration to add new compute resources without modifying code..
+* Web-based administration to add new/modify compute resources without modifying code.
 * Dashboard widget support for domain-specific scientific data visualizations (3d plots, heat maps, image data).
-* Functionality for flagging erroneous or unusual data by anonymous users.
+* Functionality for flagging erroneous or unusual data by public viewers of the dashboard.
 
 Questions about this project should be sent to Chris Ing (ing.chris@gmail.com),@jsci
 
+[1] Developers interested in the backend of this project should be advised that revised NEWT API documentation is not yet available, but should be online November 2014.
