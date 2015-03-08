@@ -14,8 +14,12 @@
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="css/keen-dashboards.css" />
-        <link rel="stylesheet" type="text/css" href="css/bokeh.min.css" />
+        <!--link rel="stylesheet" type="text/css" href="css/bokeh.min.css" /-->
+        <link rel="stylesheet" type="text/css" href="http://cdn.pydata.org/bokeh/release/bokeh-0.8.0.min.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+
+
+
     </head>
     <body class="application">
         <!--[if lt IE 8]>
@@ -67,13 +71,14 @@
             <div class="col-sm-6">
               <div class="chart-wrapper">
                 <div class="chart-title">
-                  2D Histogram Example.
+                  Scatter Plot Example.
                 </div>
                 <div class="chart-stage">
-                  <img data-src="holder.js/100%x350/white">
+                  <div id="bkplot" />
+                  <!--img data-src="holder.js/100%x350/white"-->
                 </div>
                 <div class="chart-notes">
-                  This is another plot yet to exist.
+                  Just a plot.
                 </div>
               </div>
             </div>
@@ -108,8 +113,8 @@
         <!-- Add your site or application content here -->
         <!--p>Hello world! This is HTML5 Boilerplate.</p-->
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+        <s!--cript src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script-->
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
         <script type="text/javascript" src="js/vendor/bootstrap.min.js"></script>
@@ -119,8 +124,60 @@
         </script>
         <script type="text/javascript" src="js/vendor/keen.min.js"></script>
         <script type="text/javascript" src="js/vendor/keen.min.js"></script>
-        <script type="text/javascript" src="js/vendor/bokeh.min.js"></script>
+        <!--script type="text/javascript" src="js/vendor/bokeh.min.js"></script-->
+         <script type='text/javascript' src="http://cdn.pydata.org/bokeh/release/bokeh-0.8.0.min.js"></script>
+        <!--script type="text/javascript" src="js/vendor/coffee-script.js"></script-->
         <script type="text/javascript" src="js/vendor/coffee-script.js"></script>
+        <script type="text/coffeescript">
+            r = new Bokeh.Random(123456789)
+            x = (r.randf()*100 for i in _.range(4000))
+            y = (r.randf()*100 for i in _.range(4000))
+            data = {
+              x: x
+              y: y
+              radius: (r.randf()+0.3 for i in _.range(4000))
+              color: ("rgb(#{ Math.floor(50+2*val[0]) }, #{ Math.floor(30+2*val[1]) }, 150)" for                         val in _.zip(x, y))
+            }
+
+            scatter = {
+              type: 'Circle'
+              source: "mydata"
+              x: 'x'
+              y: 'y'
+              radius: 'radius'
+              fill_color: 'color'
+              fill_alpha: 0.6
+              line_color: null
+            }
+
+            options = {
+              title: "Scatter Demo"
+              plot_width: 600
+              plot_height: 600
+              x_range: [0, 100]
+              y_range: [0, 100]
+            }
+
+            xaxis = {
+              type: "auto"
+              location: "below"
+              grid: true
+            }
+
+            yaxis = {
+              type: "auto"
+              location: "left"
+              grid: true
+            }
+
+            $("#bkplot").bokeh("figure", {
+              options: options
+              sources: { mydata: data }
+              glyphs: [scatter]
+              guides: [xaxis, yaxis]
+              tools: ["Pan", "WheelZoom", "Resize", "Reset", "BoxZoom"]
+            })
+        </script>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
@@ -131,5 +188,7 @@
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
             ga('create','UA-XXXXX-X','auto');ga('send','pageview');
         </script>
+
+
     </body>
 </html>
