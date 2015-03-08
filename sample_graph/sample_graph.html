@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title> Matplotdash Example Graph </title>
+ <script type="text/javascript" src="js/coffeescript.js"></script>
+  <script type='text/javascript' src='js/dummy.js'></script>
+  
+  
+  
+  
+  <link rel="stylesheet" type="text/css" href="css/result-light.css">
+  
+    
+      <script type='text/javascript' src="http://cdn.pydata.org/bokeh/release/bokeh-0.8.0.min.js"></script>
+    
+  
+    
+      <link rel="stylesheet" type="text/css" href="http://cdn.pydata.org/bokeh/release/bokeh-0.8.0.min.css">
+    
+  
+  <style type='text/css'>
+    
+  </style>
+  <script type="text/coffeescript">
+window.source = Bokeh.Collections('ColumnDataSource').create(
+  data: 
+    x: []
+    y: []
+)
+
+spec = {
+  type: 'Line'
+  source: window.source
+  x: 'x'
+  y: 'y'
+  line_width: 5
+  line_color: 'blue'
+}
+
+options = {
+  title: "Most recent RMS values"
+  min_border: 10
+  plot_width: 300
+  plot_height: 300
+  x_range: [0, 100]
+  y_range: [5, 10]
+} 
+
+xaxis = {
+  type: "auto"
+  location: "below"
+  grid: true
+}
+
+yaxis = {
+  type: "auto"
+  location: "left"
+  grid: true
+}
+    
+$("#bkplot").bokeh("figure", {
+  options: options
+  glyphs: [spec]
+  guides: [xaxis, yaxis]
+  tools:["Pan", "WheelZoom" ,"Resize" ,"PreviewSave"]
+})
+
+update = () ->
+  data = window.source.get('data')
+  `jQuery.get("http://10.242.35.179:5000/ts/", function (tmp) {
+    data["x"] = tmp["ts"]["time"];
+    data["y"] = tmp["ts"]["value"];
+    })`
+  window.source.set('data', data)
+  window.source.trigger('change', source, {})
+
+setInterval(update, 5000)
+</script>
+
+
+</head>
+<body>
+  <div id="bkplot" />
+  Updates every five seconds.
+</body>
+
+
+</html>
